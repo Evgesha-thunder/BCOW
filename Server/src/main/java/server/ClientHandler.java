@@ -14,6 +14,7 @@ public class ClientHandler {
     private DataOutputStream out;
 
     private String nickname;
+    private String toNickname;
 
     public ClientHandler(Server server, Socket socket) {
         try {
@@ -61,8 +62,18 @@ public class ClientHandler {
                             out.writeUTF(Command.END);
                             break;
                         }
+                        if (str.startsWith("/w ")) {
+                            String[] tokens = str.split("\\s", 3);
+                            String nick = tokens[1];
+                            String msg = str.substring(4 + nick.length());
+                            server.sendMessageToNick(nick, this, msg);
+                        } else {
 
-                        server.broadcastMsg(this, str);
+
+                            server.broadcastMsg(this,str);
+
+
+                        }
                     }
                 } catch (RuntimeException e) {
                     System.out.println(e.getMessage());
