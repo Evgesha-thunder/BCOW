@@ -56,6 +56,19 @@ public class Server {
         }
     }
 
+    public void sendMessageToNick(String toNick, ClientHandler fromNick, String msg) {
+        for (ClientHandler o : clients) {
+            if (o.getNickname().equals(toNick)) {
+                o.sendMsg("от " + fromNick.getNickname() + " : " + msg);
+                fromNick.sendMsg("клиенту  " + toNick + "  " + msg);
+                return;
+            }
+
+        }
+        fromNick.sendMsg("Участника с ником " + toNick + " нет на свете");
+    }
+
+
     public void subscribe(ClientHandler clientHandler){
         clients.add(clientHandler);
     }
